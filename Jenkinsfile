@@ -22,7 +22,7 @@ pipeline {
             steps {
 				script {
                     dir('$PWD/maven.java-fundamentals') {
-                        sh "mvn package"
+                        sh "mvn package -Dmaven.test.failure.ignore=true"
                     }
                 }
             }
