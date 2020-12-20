@@ -8,14 +8,18 @@ pipeline {
     stages {
         stage('SCM Checkout') {
             steps {
-                sh 'git clone https://github.com/nmm131/maven.java-fundamentals'
+				script {
+					sh 'git clone https://github.com/nmm131/maven.java-fundamentals'
+				}
             }
         }
 
         stage('Compile-Package') {
             steps {
-                def mvnHome = tool name: 'maven-3', type: 'maven'
-                sh "${mvnHome}/bin/mvn/package"
+				script {
+					def mvnHome = tool name: 'maven-3', type: 'maven'
+					sh "${mvnHome}/bin/mvn/package"
+				}
             }
         }
     }
