@@ -1,25 +1,30 @@
 pipeline {
     agent {
         docker {
-            image 'maven:3-alpine' 
+            image 'jamesdbloom/docker-java8-maven:latest' 
             args '-v /root/.m2:/root/.m2' 
         }
     }
     stages {
-        stage('SCM Checkout') {
+		stage('Set Up') {
             steps {
-				script {
-					sh 'git clone https://github.com/nmm131/maven.java-fundamentals'
-				}
+                script {
+                    sh 'rm -rf maven.java-fundamentals'
+                }
             }
         }
-
+        stage('SCM Checkout') {
+            steps {
+				sh 'git clone https://github.com/nmm131/maven.java-fundamentals $PWD/maven.java-fundamentals'
+            }
+        }
         stage('Compile-Package') {
             steps {
 				script {
-					def mvnHome = tool name: 'maven-3', type: 'maven'
-					sh "${mvnHome}/bin/mvn/package"
-				}
+                    dir('$PWD/maven.java-fundamentals') {
+                        sh "mvn package"
+                    }
+                }
             }
         }
     }
